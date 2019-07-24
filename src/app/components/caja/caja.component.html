@@ -1,0 +1,154 @@
+<div class="container">
+  <div class="row m-2">
+
+  </div>
+  <!-- titulo -->
+  <!-- <div class="card">
+    <div class="card-head text-center m-2">
+      <h5>Menu de Ventas</h5>
+    </div>
+  </div> -->
+  <!-- titulo -->
+  <div class="row m-2">
+
+  </div>
+  <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active cursor-pointer" href="#nueva_venta" data-toggle="tab">Nueva Venta</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link cursor-pointer" href="#consultar_producto" data-toggle="tab">Consultar Producto</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link cursor-pointer" href="#caja" data-toggle="tab">Cuadrar Caja</a>
+  </li>
+  <!-- <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </div>
+  </li> -->
+</ul>
+<div id="myTabContent" class="tab-content">
+  <!-- seccion nueva venta -->
+  <div class="tab-pane fade active show" id="nueva_venta">
+    <div class="row">
+      <div class="col-md-4">
+        <form [formGroup]="formCodigo">
+          <div class="form-group">
+            <label class="col-form-label" for="inputDefault">Ingrese Código Producto</label>
+            <input type="number" class="form-control" placeholder="07500056201236" formControlName="codigo" (keydown.enter)="buscarProducto()">
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4">
+
+      </div>
+      <div class="col-md-4">
+        <!-- <div class="card border-info mb-3" style="max-width: 20rem;">
+          <div class="card-header"><h1><strong>TOTAL VENTA:</strong></h1></div>
+          <div class="card-body">
+            <h1><strong>$ {{total_venta}}</strong></h1>
+          </div>
+        </div> -->
+        <div class="col-md-12">
+          <h1><strong>TOTAL VENTA</strong></h1>
+        </div>
+        <div class="col-md-12">
+          <h1><strong>$ {{total_venta}}</strong></h1>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- detalle de venta -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card border-info mb-3">
+          <div class="card-header text-center">Productos de Esta Venta</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped table-bordered">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Quitar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let producto of productos_venta">
+                    <th scope="row">{{producto.codigo}}</th>
+                    <td>{{producto.producto}}</td>
+                    <td>{{producto.precio}}</td>
+                    <td><input class="form-control form-control-sm number_width" type="number" placeholder="" [(ngModel)]="producto.cantidad" (change)="actualizarCantidad(producto,$event)" (keyup)="actualizarTotalVenta()"></td>
+                    <td>{{producto.precio * producto.cantidad}}</td>
+                    <td><button type="button" name="button" class="btn btn-danger"><span><i class="fa fa-minus-square"></i></span></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- detalle de venta -->
+
+    <!-- pago con -->
+    <div class="row">
+      <div class="col-md-4">
+        <h1><strong>PAGA CON:</strong></h1>
+      </div>
+      <div class="col-md-4">
+
+      </div>
+      <div class="col-md-4">
+        <h1><strong>VUELTO:</strong></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+          <form [formGroup]="formPago">
+            <div class="form-group">
+              <!-- <label class="col-form-label" for="inputDefault">Ingrese Código Producto</label> -->
+
+              <input type="number" class="form-control" placeholder="ingrese dinero" formControlName="pago">
+              <!-- <input type="number" class="form-control" placeholder="ingrese dinero" formControlName="pago" (keyup)="calcularVuelto()" (keyup.delete)="calcularVuelto()"> -->
+            </div>
+          </form>
+
+      </div>
+      <div class="col-md-4">
+        <button type="button" name="button" class="btn btn-success float-left" (click)="calcularVuelto()">Calcula Vuelto</button>
+      </div>
+      <div class="col-md-4">
+        <div class="col-md-12">
+          <h1><strong>$ {{vuelto}}</strong></h1>
+        </div>
+      </div>
+    </div>
+    <!-- pago con -->
+
+  </div>
+  <!-- seccion nueva venta -->
+
+  <!-- seccion consultar producto -->
+  <div class="tab-pane fade" id="consultar_producto">
+    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+  </div>
+  <!-- seccion consultar producto -->
+
+  <!-- seccion caja -->
+  <div class="tab-pane fade" id="caja">
+    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
+  </div>
+  <!-- seccion caja -->
+</div>
+</div>

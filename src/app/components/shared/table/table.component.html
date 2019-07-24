@@ -1,0 +1,114 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <button type="button" name="button" class="btn btn-success" (click)="aplicarFiltros()">Aplicar Filtros</button>
+  </div>
+</div>
+<div class="row m-2">
+
+</div>
+
+<!-- tabla -->
+<div class="table-responsive">
+  <table class="table table-bordered table-hover table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th class="text-center" scope="col" *ngFor="let column of settings.columns | keys">
+          <div class="row">
+            <div class="col-md-12">
+              <button (click)="cambiarSortBy(column)" type="button" name="button" class="float-right btn btn-warning" *ngIf="(filtro['sortBy'][column['key']]=='ASC' && settings['columns'][column['key']]['key'] != 'none')"><i class="fa fa-caret-down"></i></button>
+              <button (click)="cambiarSortBy(column)" type="button" name="button" class="float-right btn btn-warning" *ngIf="(filtro['sortBy'][column['key']]=='DESC' && settings['columns'][column['key']]['key'] != 'none')"><i class="fa fa-caret-up"></i></button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h5>{{column.cabecera}}</h5>
+            </div>
+          </div>
+          </th>
+      </tr>
+      <td *ngFor="let column of settings.columns | keys" class="text-center">
+      <!-- <span *ngIf="column.value.filter?.visible == true">
+        <span *ngIf="column['value']['type'] != 'date' && column['value']['type'] != 'obj'">
+          <input type="text" class="form-control" [value]="filter['values'][column['key']]"
+          [(ngModel)]="filter['values'][column['key']]" (keydown.enter)="dataFilter(column['key'],$event)">
+        </span>
+        <span *ngIf="column['value']['type'] == 'date'"> -->
+          <!--<input [value]="filter['values'][column['key']]" [(ngModel)]="filter['values'][column['key']]" (change)="dataFilter(column['key'],$event)">-->
+          <!-- <input type="text" placeholder="" id="fecha" class="form-control" (bsValueChange)="dataFilter(column['key'],$event, true)" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-default' }">
+        </span>
+        <span *ngIf="column['value']['type'] == 'obj'">
+          <span *ngIf="column['value']['filter']['type'] == 'dd'">
+            <select class="form-control" (change)="dataFilter(column['key'],$event)">
+              <option value="">Todos</option>
+              <option *ngFor="let item of transform_to_array(column['value']['filter']['data'])" [value]="item.id"
+                [selected]="this.filter['values'][column['key']] == item.id">
+                {{ item.value }}
+              </option>
+            </select>
+          </span>
+        </span>
+      </span> -->
+      <span *ngIf="column['filter']['visible']==true">
+
+        <span *ngIf="column['filter']['tipo']==='texto'">
+          <input type="text" class="form-control" [value]="filtro['valor'][column['key']]"
+          [(ngModel)]="filtro['valor'][column['key']]" (keydown.enter)="cambiarValorColumna(column['key'],$event)">
+        </span>
+
+        <span *ngIf="column['filter']['tipo']==='date'">
+          <ng-datepicker [options]="options" [(ngModel)]="filtro['valor'][column['key']]" (change)="cambiarValorColumna(column['key'],$event,true)"></ng-datepicker>
+          <!-- <input type="text" placeholder="" id="fecha" class="form-control" (bsValueChange)="dataFilter(column['key'],$event, true)" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-default' }"> -->
+        </span>
+
+        <span *ngIf="column['filter']['tipo']==='dropdown'">
+          <!-- <select class="form-control" id="exampleSelect2" (change)="cambiarValorSelect(column['key'],$event)">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let item of column['filter']['data']" [value]="item['id']">{{item['display']}}</option>
+          </select> -->
+          <input class="form-control" type="text" list="column['key']" (change)="buscarValorSelect([column['key']],$event)"/>
+            <datalist id="column['key']">
+              <option *ngFor="let item of column['filter']['data']"  [value]="item['display']"></option>
+            </datalist>
+        </span>
+
+
+
+      </span>
+
+    </td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of table_list">
+        <td scope="row" class="text-center" *ngFor="let column of settings.columns | keys">
+          <span *ngIf="column.tipo === 'attributes'">{{getValue(item, column.path)}}</span>
+          <span *ngIf="column.tipo === 'relationships'">{{getValue(item, column.path)}}</span>
+          <span *ngIf="column.tipo === 'date'">{{getValue(item, column.path)| date:'dd/MM/yyyy hh:mm'}} hrs</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- tabla -->
+
+
+
+<!-- paginador -->
+<div *ngIf="links">
+  <small>Página {{meta.current_page}} de {{meta.last_page}}</small>
+  <ul class="pagination pagination-sm">
+    <li class="page-item" [ngClass]="{ disabled: links.first == null }">
+      <a class="page-link cursor-pointer" (click)="navigate(links.first)">Primero</a>
+    </li>
+    <li class="page-item" [ngClass]="{ disabled: links.prev == null }">
+      <a class="page-link cursor-pointer" (click)="navigate(links.prev)">Anterior</a>
+    </li>
+    <li class="page-item" [ngClass]="{ disabled: links.next == null }">
+      <a class="page-link cursor-pointer" (click)="navigate(links.next)">Siguiente</a>
+    </li>
+    <li class="page-item" [ngClass]="{ disabled: links.last == null }">
+      <a class="page-link cursor-pointer" (click)="navigate(links.last)">Último</a>
+    </li>
+  </ul>
+</div>
+<!-- paginador -->

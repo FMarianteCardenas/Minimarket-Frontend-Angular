@@ -1,0 +1,10 @@
+
+<div class="container">
+
+  <div class="page-header m-5">
+    <h1 class="display-4 text-center">Administración de Usuarios</h1>
+  </div>
+
+  <app-table [table_list]="table_list" [settings]="settings" [links]="links" [meta]="meta" (aplicar_filtro)="aplicarFiltro($event)"></app-table>
+
+</div>

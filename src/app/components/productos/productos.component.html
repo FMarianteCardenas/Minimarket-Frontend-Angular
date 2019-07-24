@@ -1,0 +1,102 @@
+<div class="container">
+
+  <!-- cabecera -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="page-header m-5">
+        <h1 class="display-4 text-center">Administración de Productos</h1>
+      </div>
+      <hr>
+    </div>
+  </div>
+
+  <!-- cabecera -->
+
+  <!-- botoncrear -->
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn  btn-success float-right" (click)="open(content)"><span><i class="fa fa-plus-circle"></i></span> Crear Producto</button>
+    </div>
+  </div>
+  <!-- botoncrear -->
+
+  <!-- <div class="row m-2">
+    <i class="fa fa-bars"></i>
+    <i class="fa fa-angle-down"></i>
+    <i class="fa fa-caret-square-up"></i>
+    <i class="fa fa-apple"></i>
+    <i class="fa fa-caret-down"></i>
+  </div> -->
+
+  <!-- tabla compartida -->
+  <app-table [table_list]="table_list" [settings]="settings" [links]="links" [meta]="meta" (aplicar_filtro)="aplicarFiltro($event)"></app-table>
+  <!-- tabla compartida -->
+
+</div>
+
+<!-- modal crear producto -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Nuevo Producto</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formCrear">
+      <div class="form-group">
+        <div class="row m-2">
+          <label for="code">Codigo Producto</label>
+          <input type="text" class="form-control" formControlName="code" ngbAutofocus>
+        </div>
+        <div class="row m-2">
+          <label for="name">Nombre</label>
+          <input type="text" class="form-control" formControlName="name">
+        </div>
+        <div class="row m-2">
+          <label for="description">Descripción</label>
+          <textarea rows="8" cols="80" class="form-control" formControlName="description"></textarea>
+        </div>
+        <div class="row m-2">
+          <label for="category_id">Seleccionar Categoria</label>
+          <select class="form-control" name="" formControlName="category_id">
+            <option [value]="categoria.id" *ngFor="let categoria of categorias">{{categoria.attributes.name}}</option>
+          </select>
+        </div>
+
+
+
+
+
+        <!-- <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+
+        </div> -->
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="crearProducto()" [disabled]="formCrear.invalid">Crear Producto</button>
+  </div>
+</ng-template>
+<!-- modal crear producto -->
+
+<!-- <pre>{{closeResult}}</pre> -->
+
+<!-- sweet alert -->
+<!-- <swal
+  #deleteSwal
+  title="UPS!"
+  text="No se ha podido Registrar el Producto {{texto}}"
+  type="error"
+  [showCancelButton]="false"
+  [focusCancel]="false"
+  [focusConfirm]="true"
+  (confirm)="cerrarAlert()">
+</swal> -->
+<swal #errorSwal [options]="options2" (confirm)="cerrarAlert()"></swal>
+<swal #successSwal [options]="options" (confirm)="cerrarAlert2()"></swal>
+<!-- sweet alert -->
